@@ -65,7 +65,6 @@ def visualize_search_gif(func, history, filename="search.gif"):
     # --- 3D surface ---
     surf = ax3d.plot_surface(X, Y, Z, cmap="jet", edgecolor="k", linewidth=0.3)
 
-    # nastavíme správné limity, aby matplotlib nevykreslil defaultní krychli 0–1
     if hasattr(func, "viz_bounds"):
         ax3d.set_xlim(func.viz_bounds[0], func.viz_bounds[1])
         ax3d.set_ylim(func.viz_bounds[2], func.viz_bounds[3])
@@ -164,6 +163,6 @@ def visualize_search_gif(func, history, filename="search.gif"):
         fig, update, frames=len(history), interval=200, blit=False, repeat=False
     )
 
-    ani.save(filename, writer="pillow", fps=5)
+    ani.save(filename, writer="pillow", fps=3)
     print(f"Animace uložena do {filename}")
     plt.close(fig)
