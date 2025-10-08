@@ -2,6 +2,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import animation
 
+# numpy.linspace(start, stop, num=50, endpoint=True, retstep=False, dtype=None, axis=0, *, device=None)[source]
+    # Return evenly spaced numbers over a specified interval.
+    # Returns num evenly spaced samples, calculated over the interval [start, stop].
+    # The endpoint of the interval can optionally be excluded.
+
+# numpy.meshgrid(*xi, copy=True, sparse=False, indexing='xy')[source]
+    # Return a tuple of coordinate matrices from coordinate vectors.
+
+
 
 def get_visualization_grid(func, grid_points):
     """Vrátí X, Y, Z mřížku pro vizualizaci funkce."""
@@ -111,7 +120,8 @@ def visualize_search_gif(func, history, filename="search.gif"):
     # --- graf konvergence ---
     axplot.set_xlim(0, len(history))
     all_f = [h[1] for h in history]
-    axplot.set_ylim(0, max(all_f))
+    epsilon = 1e-6  # Oprava chybky s nulovým rozsahem
+    axplot.set_ylim(0, max(all_f) + epsilon)
     axplot.set_title("Nejlepší hodnota v čase")
     axplot.set_xlabel("Krok")
     axplot.set_ylabel("f(x)")
