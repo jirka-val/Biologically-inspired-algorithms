@@ -1,10 +1,8 @@
 import os
 import numpy as np
 
-# --- spojité algoritmy ---
-from algorithms.blind_search import blind_search
-from algorithms.hill_climbing import hill_climbing
-from algorithms.simulated_annealing import simulated_annealing
+# --- Differential Evolution ---
+from algorithms.differential_evolution import differential_evolution
 
 # --- testovací funkce (spojité) ---
 from functions.ackley import Ackley
@@ -19,10 +17,6 @@ from functions.zakharov import Zakharov
 
 # --- vizualizace ---
 from core.visualization import visualize_function, visualize_search_gif
-from core.visualization_tsp import visualize_tsp
-
-# --- genetický algoritmus pro TSP ---
-from algorithms.genetic_tsp import genetic_tsp
 
 
 # --- pomocná funkce ---
@@ -33,29 +27,66 @@ def ensure_dir(path):
 
 if __name__ == "__main__":
 
+    # ==========================================================
+    # DIFFERENTIAL EVOLUTION NA VŠECH SPOJITÝCH FUNKCÍCH
+    # ==========================================================
+
+    FUNCTIONS = [
+        Sphere, Ackley, Schwefel, Rosenbrock,
+        Rastrigin, Griewank, Levy, Michalewicz, Zakharov
+    ]
+
+    # Parametry algoritmu
+    NP = 40   # velikost populace
+    F = 0.7   # faktor mutace
+    CR = 0.9  # crossover rate
+    G = 300   # počet generací
+
+    for func_class in FUNCTIONS:
+        func = func_class(dimension=2)
+        print(f"\n=== DIFFERENTIAL EVOLUTION on {func.name} ===")
+
+        # Volání algoritmu
+        best_x, best_f, history = differential_evolution(
+            function=func,
+            NP=NP,
+            F=F,
+            CR=CR,
+            G=G
+        )
+
+        print(f"Best solution found: {best_x}")
+        print(f"Best fitness: {best_f:.6f}")
+
+        # --- Vizualizace (uloží GIF do složky results/differential_evolution) ---
+        save_dir = os.path.join("results", "differential_evolution")
+        ensure_dir(save_dir)
+        filename = os.path.join(save_dir, f"{func.name}.gif")
+
+        visualize_search_gif(func, history, filename=filename)
+
+        print(f"Animation saved to {filename}")
+
     # =======================
     # GENETICKÝ ALGORITMUS PRO TSP
     # =======================
-
-    num_cities = 20
-    cities = np.random.rand(num_cities, 2) * 200
-
-    print(f"=== GENETIC ALGORITHM – Travelling Salesman Problem ({num_cities} cities) ===")
-
-    best_route, best_distance, history = genetic_tsp(cities, NP=20, G=300)
-
-    save_dir = os.path.join("results", "genetic_tsp")
-    ensure_dir(save_dir)
-    filename = os.path.join(save_dir, "tsp.gif")
-
-    visualize_tsp(history, cities, filename=filename)
-
-    print("Best route found:", best_route)
-    print("Total distance:", best_distance)
-
-
-
-
+    """
+        num_cities = 20
+        cities = np.random.rand(num_cities, 2) * 200
+    
+        print(f"=== GENETIC ALGORITHM – Travelling Salesman Problem ({num_cities} cities) ===")
+    
+        best_route, best_distance, history = genetic_tsp(cities, NP=20, G=300)
+    
+        save_dir = os.path.join("results", "genetic_tsp")
+        ensure_dir(save_dir)
+        filename = os.path.join(save_dir, "tsp.gif")
+    
+        visualize_tsp(history, cities, filename=filename)
+    
+        print("Best route found:", best_route)
+        print("Total distance:", best_distance)
+    """
 
     # =======================
     # SPOJITÉ FUNKCE
