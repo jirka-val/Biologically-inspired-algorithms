@@ -4,6 +4,7 @@ import numpy as np
 # --- Differential Evolution ---
 from algorithms.differential_evolution import differential_evolution
 from algorithms.particle_swarm_optimization import particle_swarm_optimization
+from algorithms.soma import soma_all_to_one
 
 # --- testovací funkce (spojité) ---
 from functions.ackley import Ackley
@@ -29,7 +30,7 @@ def ensure_dir(path):
 if __name__ == "__main__":
 
     # ==========================================================
-    # PARTICLE SWARM OPTIMIZATION (PSO)
+    # SOMA – Self-Organizing Migrating Algorithm (All-to-One)
     # ==========================================================
 
     FUNCTIONS = [
@@ -37,6 +38,39 @@ if __name__ == "__main__":
         Rastrigin, Griewank, Levy, Michalewicz, Zakharov
     ]
 
+    for func_class in FUNCTIONS:
+        func = func_class(dimension=2)
+        print(f"\n=== SOMA All-to-One on {func.name} ===")
+
+        best_x, best_f, history = soma_all_to_one(
+            function=func,
+            pop_size=20,
+            PRT=0.4,
+            path_length=3.0,
+            step=0.11,
+            M_max=100
+        )
+
+        print(f"Best solution found: {best_x}")
+        print(f"Best fitness: {best_f:.6f}")
+
+        save_dir = os.path.join("results", "soma")
+        ensure_dir(save_dir)
+        filename = os.path.join(save_dir, f"{func.name}.gif")
+
+        visualize_population_evolution(func, history, filename=filename, algorithm_name="SOMA – All-to-One")
+
+        print(f"Animation saved to {filename}")
+
+    # ==========================================================
+    # PARTICLE SWARM OPTIMIZATION (PSO)
+    # ==========================================================
+    """
+    FUNCTIONS = [
+        Sphere, Ackley, Schwefel, Rosenbrock,
+        Rastrigin, Griewank, Levy, Michalewicz, Zakharov
+    ]
+    
     for func_class in FUNCTIONS:
         func = func_class(dimension=2)
         print(f"\n=== PARTICLE SWARM OPTIMIZATION on {func.name} ===")
@@ -66,6 +100,7 @@ if __name__ == "__main__":
         )
 
         print(f"Animation saved to {filename}")
+    """
 
     # ==========================================================
     # DIFFERENTIAL EVOLUTION NA VŠECH SPOJITÝCH FUNKCÍCH
