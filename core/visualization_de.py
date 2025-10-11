@@ -1,13 +1,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import animation, gridspec
-from core.visualization import get_visualization_grid  # import základní funkce
+from core.visualization import get_visualization_grid
 
 
-def visualize_population_evolution(func, history, filename="de_population.gif"):
+def visualize_population_evolution(func, history, filename="de_population.gif", algorithm_name="Differential Evolution"):
     """
-    Vylepšená vizualizace pro Differential Evolution – zobrazuje celou populaci + tabulku hodnot.
-    Nejlepší jedinec je v tabulce zvýrazněn.
+    Vylepšená vizualizace pro evoluční algoritmy – zobrazuje celou populaci + tabulku hodnot.
+    Nejlepší jedinec je zvýrazněn. Lze nastavit název algoritmu (např. PSO, DE).
     """
     if func.dimension != 2:
         print("Vizualizace funguje jen pro 2D funkce.")
@@ -23,7 +23,7 @@ def visualize_population_evolution(func, history, filename="de_population.gif"):
     axtable.axis("off")
 
     fig.suptitle(
-        "Differential Evolution ",
+        f"{algorithm_name} – Optimalizace funkce {func.name}",
         fontsize=16,
         fontweight="bold",
         color="#212121",
@@ -106,7 +106,7 @@ def visualize_population_evolution(func, history, filename="de_population.gif"):
 
         # aktualizace titulku uvnitř grafu
         ax.set_title(
-            f"{func.name} – Generace {frame+1}/{len(history)} | Nejlepší f = {values[best_idx]:.5f}",
+            f"{func.name} – Generace {frame}/{len(history)} | Nejlepší f = {values[best_idx]:.5f}",
             fontsize=12,
             fontweight="bold"
         )

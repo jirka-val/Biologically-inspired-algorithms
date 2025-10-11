@@ -35,7 +35,7 @@ def differential_evolution(function, NP=30, F=0.8, CR=0.9, G=200):
     history = [[(ind.params.copy(), ind.f) for ind in pop]]
 
     # hlavní evoluční smyčka
-    for g in range(G):
+    for g in range(G - 1):
         new_pop = deepcopy(pop)
 
         for i, x_i in enumerate(pop):

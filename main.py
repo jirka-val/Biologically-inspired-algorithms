@@ -3,7 +3,7 @@ import numpy as np
 
 # --- Differential Evolution ---
 from algorithms.differential_evolution import differential_evolution
-from core.visualization_de import visualize_population_evolution
+from algorithms.particle_swarm_optimization import particle_swarm_optimization
 
 # --- testovací funkce (spojité) ---
 from functions.ackley import Ackley
@@ -18,7 +18,7 @@ from functions.zakharov import Zakharov
 
 # --- vizualizace ---
 from core.visualization import visualize_function, visualize_search_gif
-
+from core.visualization_de import visualize_population_evolution
 
 # --- pomocná funkce ---
 def ensure_dir(path):
@@ -29,9 +29,48 @@ def ensure_dir(path):
 if __name__ == "__main__":
 
     # ==========================================================
-    # DIFFERENTIAL EVOLUTION NA VŠECH SPOJITÝCH FUNKCÍCH
+    # PARTICLE SWARM OPTIMIZATION (PSO)
     # ==========================================================
 
+    FUNCTIONS = [
+        Sphere, Ackley, Schwefel, Rosenbrock,
+        Rastrigin, Griewank, Levy, Michalewicz, Zakharov
+    ]
+
+    for func_class in FUNCTIONS:
+        func = func_class(dimension=2)
+        print(f"\n=== PARTICLE SWARM OPTIMIZATION on {func.name} ===")
+
+        # spuštění algoritmu
+        best_x, best_f, history = particle_swarm_optimization(
+            function=func,
+            pop_size=15,  # počet částic
+            c1=2.0,  # kognitivní složka
+            c2=2.0,  # sociální složka
+            w=0.7,  # setrvačnost
+            M_max=50  # počet iterací
+        )
+
+        print(f"Best solution found: {best_x}")
+        print(f"Best fitness: {best_f:.6f}")
+
+        save_dir = os.path.join("results", "pso")
+        ensure_dir(save_dir)
+        filename = os.path.join(save_dir, f"{func.name}.gif")
+
+        visualize_population_evolution(
+            func,
+            history,
+            filename=filename,
+            algorithm_name="Particle Swarm Optimization (PSO)"
+        )
+
+        print(f"Animation saved to {filename}")
+
+    # ==========================================================
+    # DIFFERENTIAL EVOLUTION NA VŠECH SPOJITÝCH FUNKCÍCH
+    # ==========================================================
+    """
     FUNCTIONS = [
         Sphere, Ackley, Schwefel, Rosenbrock,
         Rastrigin, Griewank, Levy, Michalewicz, Zakharov
@@ -61,6 +100,7 @@ if __name__ == "__main__":
         visualize_population_evolution(func, history, filename=filename)
 
         print(f"Animation saved to {filename}")
+    """
 
     # =======================
     # GENETICKÝ ALGORITMUS PRO TSP
