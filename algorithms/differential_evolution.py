@@ -20,7 +20,7 @@ def differential_evolution(function, NP=30, F=0.8, CR=0.9, G=200):
     :param F: faktor mutace
     :param CR: crossover rate
     :param G: počet generací
-    :return: nejlepší nalezené řešení, jeho fitness a historie
+    :return: nejlepší nalezené řešení, jeho fitness a historie populací
     """
     dimension = function.dimension
     lower = function.lower_bound
@@ -31,25 +31,22 @@ def differential_evolution(function, NP=30, F=0.8, CR=0.9, G=200):
     for ind in pop:
         ind.f = function.evaluate(ind.params)
 
-    # uložíme nejlepší
-    best = min(pop, key=lambda s: s.f)
-    history = [(best.params.copy(), best.f)]
+    # uložíme počáteční populaci
+    history = [[(ind.params.copy(), ind.f) for ind in pop]]
 
+    # hlavní evoluční smyčka
     for g in range(G):
         new_pop = deepcopy(pop)
 
         for i, x_i in enumerate(pop):
-            # random na začatek
+            # výběr tří různých jedinců
             indices = list(range(NP))
             indices.remove(i)
             r1, r2, r3 = np.random.choice(indices, 3, replace=False)
-
             x_r1, x_r2, x_r3 = pop[r1], pop[r2], pop[r3]
 
             # mutace
             v = x_r3.params + F * (x_r1.params - x_r2.params)
-
-            # ošetření hranic
             v = np.clip(v, lower, upper)
 
             # křížení
@@ -61,18 +58,20 @@ def differential_evolution(function, NP=30, F=0.8, CR=0.9, G=200):
                 else:
                     u[j] = x_i.params[j]
 
-            # vyhodnocení nové varianty
+            # selekce
             f_u = function.evaluate(u)
-
-            # Selecke
             if f_u <= x_i.f:  # minimalizace
                 new_pop[i].params = u
                 new_pop[i].f = f_u
 
+        # aktualizace populace
         pop = new_pop
 
-        # aktuálně nejlepší řešení
-        best = min(pop, key=lambda s: s.f)
-        history.append((best.params.copy(), best.f))
+        # uložení celé populace do historie
+        generation_data = [(ind.params.copy(), ind.f) for ind in pop]
+        history.append(generation_data)
+
+    # najdi nejlepší řešení
+    best = min(pop, key=lambda s: s.f)
 
     return best.params, best.f, history

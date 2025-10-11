@@ -3,6 +3,7 @@ import numpy as np
 
 # --- Differential Evolution ---
 from algorithms.differential_evolution import differential_evolution
+from core.visualization_de import visualize_population_evolution
 
 # --- testovací funkce (spojité) ---
 from functions.ackley import Ackley
@@ -36,34 +37,28 @@ if __name__ == "__main__":
         Rastrigin, Griewank, Levy, Michalewicz, Zakharov
     ]
 
-    # Parametry algoritmu
-    NP = 40   # velikost populace
-    F = 0.7   # faktor mutace
-    CR = 0.9  # crossover rate
-    G = 300   # počet generací
-
     for func_class in FUNCTIONS:
         func = func_class(dimension=2)
         print(f"\n=== DIFFERENTIAL EVOLUTION on {func.name} ===")
 
-        # Volání algoritmu
+        # --- spuštění algoritmu ---
         best_x, best_f, history = differential_evolution(
             function=func,
-            NP=NP,
-            F=F,
-            CR=CR,
-            G=G
+            NP=20,
+            F=0.5,
+            CR=0.5,
+            G=10
         )
 
         print(f"Best solution found: {best_x}")
         print(f"Best fitness: {best_f:.6f}")
 
-        # --- Vizualizace (uloží GIF do složky results/differential_evolution) ---
+        # --- vizualizace (uloží GIF do results/differential_evolution) ---
         save_dir = os.path.join("results", "differential_evolution")
         ensure_dir(save_dir)
         filename = os.path.join(save_dir, f"{func.name}.gif")
 
-        visualize_search_gif(func, history, filename=filename)
+        visualize_population_evolution(func, history, filename=filename)
 
         print(f"Animation saved to {filename}")
 
