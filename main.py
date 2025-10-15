@@ -32,7 +32,7 @@ if __name__ == "__main__":
     # ==========================================================
     # SOMA – Self-Organizing Migrating Algorithm (All-to-One)
     # ==========================================================
-
+    """
     FUNCTIONS = [
         Sphere, Ackley, Schwefel, Rosenbrock,
         Rastrigin, Griewank, Levy, Michalewicz, Zakharov
@@ -61,7 +61,7 @@ if __name__ == "__main__":
         visualize_population_evolution(func, history, filename=filename, algorithm_name="SOMA – All-to-One")
 
         print(f"Animation saved to {filename}")
-
+    """
     # ==========================================================
     # PARTICLE SWARM OPTIMIZATION (PSO)
     # ==========================================================
@@ -105,7 +105,7 @@ if __name__ == "__main__":
     # ==========================================================
     # DIFFERENTIAL EVOLUTION NA VŠECH SPOJITÝCH FUNKCÍCH
     # ==========================================================
-    """
+    #"""
     FUNCTIONS = [
         Sphere, Ackley, Schwefel, Rosenbrock,
         Rastrigin, Griewank, Levy, Michalewicz, Zakharov
@@ -121,7 +121,7 @@ if __name__ == "__main__":
             NP=20,
             F=0.5,
             CR=0.5,
-            G=10
+            G=50
         )
 
         print(f"Best solution found: {best_x}")
@@ -135,7 +135,7 @@ if __name__ == "__main__":
         visualize_population_evolution(func, history, filename=filename)
 
         print(f"Animation saved to {filename}")
-    """
+   # """
 
     # =======================
     # GENETICKÝ ALGORITMUS PRO TSP
