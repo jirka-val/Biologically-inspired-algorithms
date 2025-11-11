@@ -32,7 +32,7 @@ if __name__ == "__main__":
     # ==========================================================
     # SOMA – Self-Organizing Migrating Algorithm (All-to-One)
     # ==========================================================
-    """
+
     FUNCTIONS = [
         Sphere, Ackley, Schwefel, Rosenbrock,
         Rastrigin, Griewank, Levy, Michalewicz, Zakharov
@@ -61,11 +61,12 @@ if __name__ == "__main__":
         visualize_population_evolution(func, history, filename=filename, algorithm_name="SOMA – All-to-One")
 
         print(f"Animation saved to {filename}")
+
     """
     # ==========================================================
     # PARTICLE SWARM OPTIMIZATION (PSO)
     # ==========================================================
-    """
+
     FUNCTIONS = [
         Sphere, Ackley, Schwefel, Rosenbrock,
         Rastrigin, Griewank, Levy, Michalewicz, Zakharov
@@ -78,11 +79,10 @@ if __name__ == "__main__":
         # spuštění algoritmu
         best_x, best_f, history = particle_swarm_optimization(
             function=func,
-            pop_size=15,  # počet částic
-            c1=2.0,  # kognitivní složka
-            c2=2.0,  # sociální složka
-            w=0.7,  # setrvačnost
-            M_max=50  # počet iterací
+            pop_size=15,
+            c1=2.0,
+            c2=2.0,
+            M_max=50
         )
 
         print(f"Best solution found: {best_x}")
@@ -100,12 +100,12 @@ if __name__ == "__main__":
         )
 
         print(f"Animation saved to {filename}")
+    #"""
     """
-
     # ==========================================================
     # DIFFERENTIAL EVOLUTION NA VŠECH SPOJITÝCH FUNKCÍCH
     # ==========================================================
-    #"""
+    
     FUNCTIONS = [
         Sphere, Ackley, Schwefel, Rosenbrock,
         Rastrigin, Griewank, Levy, Michalewicz, Zakharov
@@ -135,7 +135,7 @@ if __name__ == "__main__":
         visualize_population_evolution(func, history, filename=filename)
 
         print(f"Animation saved to {filename}")
-   # """
+    """
 
     # =======================
     # GENETICKÝ ALGORITMUS PRO TSP
