@@ -4,6 +4,7 @@ import numpy as np
 from algorithms.ant_colony_optimization import ant_colony_optimization
 # --- Differential Evolution ---
 from algorithms.differential_evolution import differential_evolution
+from algorithms.firefly_algorithm import firefly_algorithm
 from algorithms.particle_swarm_optimization import particle_swarm_optimization
 from algorithms.soma import soma_all_to_one
 from core.visualization_tsp import visualize_tsp
@@ -31,11 +32,53 @@ def ensure_dir(path):
 
 if __name__ == "__main__":
 
+    # ==========================================================
+    # SEZNAM FUNKCÍ PRO TESTOVÁNÍ
+    # ==========================================================
+    FUNCTIONS = [
+        Sphere, Ackley, Schwefel, Rosenbrock,
+        Rastrigin, Griewank, Levy, Michalewicz, Zakharov
+    ]
+
+    # ==========================================================
+    # FIREFLY ALGORITHM (FA)
+    # ==========================================================
+
+    for func_class in FUNCTIONS:
+        func = func_class(dimension=2)
+        print(f"\n=== FIREFLY ALGORITHM on {func.name} ===")
+
+        best_x, best_f, history = firefly_algorithm(
+            function=func,
+            pop_size=20,
+            alpha=0.3,  # Podle zadání [cite: 145]
+            beta_0=1.0,  # Podle zadání [cite: 138]
+            max_gen=50  # 50 generací stačí na vizualizaci
+        )
+
+        print(f"Best solution found: {best_x}")
+        print(f"Best fitness: {best_f:.6f}")
+
+        save_dir = os.path.join("results", "firefly_algorithm")
+        ensure_dir(save_dir)
+        filename = os.path.join(save_dir, f"{func.name}.gif")
+
+        # Použijeme vizualizaci pro spojité funkce (jako u SOMA, PSO...)
+        visualize_population_evolution(
+            func,
+            history,
+            filename=filename,
+            algorithm_name="Firefly Algorithm (FA)"
+        )
+        print(f"Animation saved to {filename}")
+
+
     # =======================
     # ANT COLONY OPTIMIZATION (ACO) PRO TSP
     # =======================
 
-     # Odkomentuj pro spuštění
+    """
+    # Odkomentuj pro spuštění
 
     # Podle zadání: 20-40 měst
     num_cities = 25 
@@ -65,7 +108,7 @@ if __name__ == "__main__":
 
     print("Best route found (ACO):", best_route)
     print("Total distance (ACO):", best_distance)
-
+    """
 
     # ==========================================================
     # SOMA – Self-Organizing Migrating Algorithm (All-to-One)
