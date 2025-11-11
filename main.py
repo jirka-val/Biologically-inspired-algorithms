@@ -1,10 +1,12 @@
 import os
 import numpy as np
 
+from algorithms.ant_colony_optimization import ant_colony_optimization
 # --- Differential Evolution ---
 from algorithms.differential_evolution import differential_evolution
 from algorithms.particle_swarm_optimization import particle_swarm_optimization
 from algorithms.soma import soma_all_to_one
+from core.visualization_tsp import visualize_tsp
 
 # --- testovací funkce (spojité) ---
 from functions.ackley import Ackley
@@ -29,10 +31,47 @@ def ensure_dir(path):
 
 if __name__ == "__main__":
 
+    # =======================
+    # ANT COLONY OPTIMIZATION (ACO) PRO TSP
+    # =======================
+
+     # Odkomentuj pro spuštění
+
+    # Podle zadání: 20-40 měst
+    num_cities = 25 
+    cities = np.random.rand(num_cities, 2) * 200 # Mapa 200x200
+
+    # Podle zadání: počet mravenců založený na počtu měst
+    num_ants = num_cities 
+
+    print(f"=== ANT COLONY OPTIMIZATION – TSP ({num_cities} cities, {num_ants} ants) ===")
+
+    best_route, best_distance, history = ant_colony_optimization(
+        cities,
+        n_ants=num_ants,
+        n_iterations=300, 
+        alpha=1.0,       # Váha feromonu
+        beta=2.0,        # Váha vzdálenosti
+        rho=0.5,         # Míra vypařování
+        Q=10.0           # Množství pokládaného feromonu
+    )
+
+    save_dir = os.path.join("results", "aco_tsp")
+    ensure_dir(save_dir)
+    filename = os.path.join(save_dir, "tsp_aco.gif")
+
+    # Použijeme stejnou vizualizaci jako pro GA (podle zadání)
+    visualize_tsp(history, cities, filename=filename)
+
+    print("Best route found (ACO):", best_route)
+    print("Total distance (ACO):", best_distance)
+
+
     # ==========================================================
     # SOMA – Self-Organizing Migrating Algorithm (All-to-One)
     # ==========================================================
 
+    """
     FUNCTIONS = [
         Sphere, Ackley, Schwefel, Rosenbrock,
         Rastrigin, Griewank, Levy, Michalewicz, Zakharov
@@ -63,10 +102,12 @@ if __name__ == "__main__":
         print(f"Animation saved to {filename}")
 
     """
+
     # ==========================================================
     # PARTICLE SWARM OPTIMIZATION (PSO)
     # ==========================================================
 
+    """
     FUNCTIONS = [
         Sphere, Ackley, Schwefel, Rosenbrock,
         Rastrigin, Griewank, Levy, Michalewicz, Zakharov
