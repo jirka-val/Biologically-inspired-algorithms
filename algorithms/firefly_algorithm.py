@@ -54,18 +54,14 @@ def firefly_algorithm(function, pop_size=20, alpha=0.3, beta_0=1.0, max_gen=50):
             # Porovnáme ji s každou světluškou 'j'
             for j in range(pop_size):
 
-                # Pokud je 'j' jasnější (lepší) než 'i' [cite: 122]
                 if population[j].fitness < population[i].fitness:
-                    # Vypočítáme vzdálenost [cite: 144]
                     r = np.linalg.norm(population[i].position - population[j].position)
 
-                    # Vypočítáme atraktivitu (podle doporučení ze slajdu 11)
+                    # Vypočítáme atraktivitu
                     beta = beta_0 / (1.0 + r)
-
-                    # Složka přitažlivosti
                     attraction = beta * (population[j].position - population[i].position)
 
-                    # Složka náhodného pohybu (Gaussovská distribuce) [cite: 146]
+                    # Složka náhodného pohybu
                     random_step = alpha * (np.random.normal(0, 1, size=dim))
 
                     # Vypočet nové pozice
@@ -77,12 +73,8 @@ def firefly_algorithm(function, pop_size=20, alpha=0.3, beta_0=1.0, max_gen=50):
                     new_population[i].fitness = function.evaluate(new_pos)
                     moved = True
 
-                    # Světluška 'i' se pohnula, přerušíme 'j' smyčku
-                    # (pohne se jen k první jasnější, kterou najde)
                     break
 
-                    # Pokud se světluška 'i' nepohnula (byla nejlepší)
-            # provede pouze náhodný pohyb (podle slajdu 9)
             if not moved:
                 random_step = alpha * (np.random.normal(0, 1, size=dim))
                 new_pos = population[i].position + random_step
