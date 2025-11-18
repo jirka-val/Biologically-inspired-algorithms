@@ -21,10 +21,10 @@ def ant_colony_optimization(cities, n_ants=20, n_iterations=200,
         n_ants (int): Počet mravenců v kolonii. Dle zadání by měl být
                       založen na počtu měst (např. n_ants = n_cities).
         n_iterations (int): Počet generací/iterací algoritmu.
-        alpha (float): Váha feromonu (α). V příkladu PDF = 1.0.
-        beta (float): Váha viditelnosti (η). V příkladu PDF = 2.0.
-        rho (float): Míra vypařování feromonu (ρ). V příkladu PDF = 0.5.
-        Q (float): Konstanta pro pokládání feromonu. V příkladu PDF = 1.0.
+        alpha (float): Váha feromonu (α). V příkladu = 1.0.
+        beta (float): Váha viditelnosti (η). V příkladu = 2.0.
+        rho (float): Míra vypařování feromonu (ρ). V příkladu = 0.5.
+        Q (float): Konstanta pro pokládání feromonu. V příkladu = 1.0.
 
     Returns:
         tuple: (best_route, best_distance, history)
